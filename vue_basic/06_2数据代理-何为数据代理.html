@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset='UTF-8'>
+        <title>数据代理</title>
+        <script type="text/javaScript" src="../js/vue.js"></script>
+    </head>
+    <body>
+        <!--数据代理:通过一个对象代理对另一个对象中属性的操作(读/写)-->     
+        <script type="text/javascript">
+        let obj={x:100}
+        let obj2={y:200}
+
+        Object.defineProperty(obj2,'x',
+        {
+            //通过向对象2中添加属性x，给obj2的x返回一个obj的x值
+            get(){
+                return obj.x
+            },
+            //通过在对象2中代理操作对象1的值，通过对象2更改对象1的x值为控制台新传入的值，
+            //这样对象1和对象2的x值都得到了改变
+            set(value){
+                obj.x=value
+            }
+        })
+        </script>
+    </body>
+</html>
