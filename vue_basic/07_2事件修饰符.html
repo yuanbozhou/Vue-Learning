@@ -1,0 +1,144 @@
+<!--
+    Vue中的时间修饰符：
+    （常用）
+    1.prevent：组织默认事件：比如点击跳转连接后，不进行跳转；
+    2.stop：阻止事件冒泡：就是不往上一层触发；
+ //所谓冒泡指的就是事件的向上传导，当后代元素上的事件被触发时，其祖先元素的相同事件也会被触发
+父子元素才会发生事件冒泡，即子元素冒泡给父元素。
+    3.once:事件只触发一次：点击button出现alert，但再次点击就不出现alert了；
+    
+   （不常用）
+    4.capture：使用事件的捕获模式：先捕获再冒泡是一般的形式，使用capture就可以在捕获的时候输出，而不是冒泡的时候；
+    5.self：只有event.target是当前操作的元素时才触发事件；
+    6.passive：事件的默认行为立即执行，无需等待事件（函数）回调执行完毕。       
+
+-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8"/>
+        <title>数据处理</title>
+        <!--引入Vue开发版本-->
+        <script type="text/javascript" src="../js/vue.js"></script>
+        <style>         
+            *{
+                margin-top:20px;  
+            }
+            .demo1{
+                height:50px;
+                background-color:blue;
+            }
+            .box1{
+                padding:5px;
+                background-color:aqua;
+            }
+            .box2{
+                padding:5px;
+                background-color:blanchedalmond;
+            }
+            .list{
+                width:200px;
+                height:200px;
+                background-color: orange;
+                overflow:auto;
+            }
+            li{
+                height:100px;
+            }
+        </style>
+    </head>
+    <body>
+        <!--准备好一个容器-->
+        <div id="root">
+            
+            <h1>欢迎同学:{{Sname}}进入</h1>   
+            
+            <!--1. prevent阻止默认事件的发生-->
+            <!-- <a href="https://www.baidu.com" @click="showinfo">点我提示信息</a> -->
+            <a href="https://www.baidu.com" @click.prevent="showinfo">点我提示信息</a>
+    
+
+            <!--2.stop阻止事件冒泡 -->
+            <!--因为div和button都调用了showinfo函数，所以冒泡输出两次alert点击事件-->
+            <!-- <div @click="showinfo">
+                <button @click="showinfo">点我提示信息</button>
+            </div> -->
+            <div class="demo1"  @click="showinfo">
+                <button @click.stop="showinfo">点我提示信息</button>
+                <!--@click.stop.prevent组合使用：先stop阻止冒泡然后阻止跳转网页-->
+                <!-- <a href="https://www.baidu.com" button @click.stop.prevent="showinfo">点我提示信息</button> -->
+            </div>
+
+
+            <!--3..once:事件只触发一次 -->
+            <button @click.once="showinfo">点我提示信息</button>
+
+
+            <!--4.capture：使用事件的捕获模式-->
+            <!--由于冒泡，点击div2元素则输出2，1-->
+            <!-- <div class="box1" @click="showMsg(1)">
+                div1
+                <div class="box2" @click="showMsg(2)">
+                    div2
+                </div>
+            </div> -->
+            <!--添加capture参数，点击div2元素则捕获时输出1，2-->
+            <div class="box1" @click.capture="showMsg(1)">
+                div1
+                <div class="box2" @click="showMsg(2)">
+                    div2
+                </div>
+            </div>
+
+
+            <!--5.self：只有event.target是当前操作的元素时才触发事件-->
+            <!-- <div class="demo1" @click="showinfo">
+                <button @click="showinfo">点我提示信息</button>
+            </div> -->
+            <div class="demo1" @click.self="showinfo">
+                <button @click="showinfo">点我提示信息</button>
+            </div>
+
+
+            <!--6.passive：事件的默认行为立即执行，无需函数demo回调执行完毕-->
+             <!-- <ul class="list" @wheel="demo">
+                <li>1</li>
+                <li>2</li>
+                <li>3</li>
+                <li>4</li>
+            </ul> -->
+            <ul class="list"  @wheel.passive="demo">
+                <li>1</li>
+                <li>2</li>
+                <li>3</li>
+                <li>4</li>
+            </ul> 
+        </div>  
+    </body>
+        <script type="text/javascript"> 
+        Vue.config.productionTip=false//组织vue在启动时生成生产提示。
+      
+        const vm=new Vue({
+            el:'#root',
+            data:{
+                Sname:'李明'
+                },
+            methods:{
+                showinfo(e){
+                    alert('同学你好！')
+                },
+                showMsg(number){
+                    console.log(number);
+                },
+                demo(){
+                    for(let i=0;i<10000;i++)
+                    {
+                        console.log('#')
+                    }
+                    console.log('累坏了')
+                }
+            }
+           
+        })          
+        </script>        
+</html>
