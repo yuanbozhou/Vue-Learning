@@ -1,0 +1,79 @@
+<!--
+    键盘按下事件：keydown() 是在键盘按下就会触发
+    键盘弹起事件：keyup() 是在键盘松手就会触发
+    常用：
+    1.Vue中常用的按键别名：
+        回车 enter
+        删除 delete（捕获“删除”和“退格”键）
+        退出 esc
+        空格 space
+        换行 tab  （特殊，必须配合keydown去使用）
+        上 up
+        下 down
+        左 left
+        右 right
+    不常用：
+    2.Vue未提供别名的按键，可以使用按键原始的key值去绑定，但要注意转为caps-lock（两个单词组成的按键名，要分别小写，再用-连接起来）
+    3.系统修饰键（用法特殊）：ctrl，alt，shift，meta
+      （1）配合keyup使用：按下修饰键的同时，再按下其他键（任意），随后释放其他键，事件才被触发。
+      （2）配合keydown使用：正常触发事件。
+    4.也可以使用keyCode去制定具体的按键（不推荐）
+    5.Vue.config.keyCodes.自定义键名=键码，可以去定制按键别名
+-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8"/>
+        <title>事件处理</title>
+        <!--引入Vue开发版本-->        
+        <script type="text/javascript" src="../js/vue.js"></script>    
+    </head>
+    <body>
+        <!--准备好一个容器-->
+        <div id="root">            
+            <h1>欢迎同学:{{Sname}}进入</h1> 
+            <!--1.Vue中常用的按键别名：按下enter才会提交-->
+            <input type="text" placeholder="按下回车键提示输入" @keyup.enter="showinfo"><br>
+
+
+
+            <!--2.Vue未提供别名的按键，可以使用按键原始的key值去绑定，比如按下大写锁定时提交，但要CapsLocks注意是两个单词组成的，分别小写，再用-连接起来-->
+            <input type="text" placeholder="按下大写键提示输入" @keyUP.caps-lock="showinfo"><br>
+            <!-- 3.系统修饰键（用法特殊）   比如ctrl，alt，shift，meta-->
+                <!--3.1配合keyup使用：按下修饰键的同时，再按下其他键（任意），随后释放其他键，事件才被触发。-->
+            <input type="text" placeholder="按下ctrl+其他键提示输入" @keyup.ctrl="showinfo"><br>
+                <!--3.1.1配合keyup使用：按下修饰键的同时，规定按下特定键（y），随后释放其他键，事件才被触发。-->
+                <input type="text" placeholder="按下ctrl+y提示输入" @keyup.ctrl.y="showinfo"><br>
+                <!--3.2配合keydown使用：正常触发事件-->
+            <input type="text" placeholder="按下ctrl就提示输入" @keydown.ctrl="showinfo"><br> 
+             <!-- 4.也可以使用keyCode去制定具体的按键（不推荐）enter键码为13-->
+             <input type="text" placeholder="按下回车键提示输入" @keydown.13="showinfo"><br> 
+             <!-- 5.Vue.config.keyCodes.自定义键名=键码，可以去定制按键别名（第57行）-->
+             <input type="text" placeholder="按下回车键提示输入" @keydown.huiche="showinfo"><br> 
+             
+             <!-- 不论按下什么都调用打印-->
+             <input type="text" placeholder="按下回车键提示输入" @keyup="showinfo"><br>
+
+        </div>  
+    </body>
+        <script type="text/javascript"> 
+        Vue.config.productionTip=false//组织vue在启动时生成生产提示。
+
+        Vue.config.keyCodes.huiche=13//定义自定义键名=键码
+      
+        const vm=new Vue({
+            el:'#root',
+            data:{
+                Sname:'韩笑'
+                },
+            methods:{
+                showinfo(e){
+                    console.log(e.key,e.keyCode)//键名，键码
+                    console.log(e.target.value)//输入的值
+                }
+            }
+           
+        })          
+        </script>        
+</html>
+

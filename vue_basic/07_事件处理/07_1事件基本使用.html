@@ -1,0 +1,60 @@
+<!--
+    事件的基本使用：
+    1.使用v-on：xxx或简写为@xxx绑定事件，其中xxx是事件名；
+    2.事件的回调需要配置在methods对象中，最终会在vm上；
+    3.methods中配置的函数，不要用箭头函数！否则this就不是vm了；
+    4.methods中配置的函数，都是被Vue所管理的函数，this的指向是vm 或 组件实例对象；
+    5.@click=“demo” 和 @click=“demo（$event）”效果一致，因为默认穿的第一个参数就是event，还可以自己添加其他参数例如（event，a,b,c）。
+-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8"/>
+        <title>事件处理</title>
+        <!--引入Vue开发版本-->
+        <script type="text/javascript" src="../js/vue.js"></script>
+    </head>
+    <body>
+        <!--准备好一个容器-->
+        <div id="root">
+            <h1>欢迎同学:{{Sname}}进入</h1>   
+            <button v-on:click="showinfo1">点我提示信息</button>
+            <button @click="showinfo2($event,66,Sname)">点我提示信息</button>
+        </div>  
+    </body>
+        <script type="text/javascript"> 
+        Vue.config.productionTip=false//组织vue在启动时生成生产提示。
+      
+        const vm=new Vue({
+            el:'#root',
+            data:{
+                Sname:'李明',
+                //把showinfo2放入data中，就完成数据代理，这里就会在console控制台显示出该函数的set和get方法
+                showinfo2(a,number,string){
+                    console.log(a,number)
+                    console.log(this)//这里的this是代理
+                    alert("热烈欢迎！"+number+string)
+                }
+            },
+            methods:{
+                //无参，但相当于传了参数（event）,等价于它下面这个函数
+                showinfo1(){
+                    console.log(event.target.innerText)
+                    console.log(this)//这里的this是vue。
+                    //如果使用箭头函数showinfo1()=>，它就没有自己的this了，就往外找了，就找到了全局的window。                    alert("欢迎！")
+                    alert("欢迎！")
+                },
+                // showinfo1(event){
+                //     alert("欢迎！")
+                // },
+
+                //有参数,与上面传入的参数一一对应
+                // showinfo2(a,number,string){
+                //     console.log(a,number)
+                //     // alert("热烈欢迎！"+number+string)
+                // }
+            }
+           
+        })          
+        </script>        
+</html>

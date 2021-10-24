@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8"/>
+        <title>计算属性</title>
+        <!--引入Vue开发版本-->        
+        <script type="text/javascript" src="../js/vue.js"></script>
+        <style>
+            *{
+                margin:5px;
+            }
+        </style>
+   
+    </head>
+    <body>
+        
+        <!--准备好一个容器-->
+        <div id="root">                    
+            <!--1.Vue中常用的按键别名：按下enter才会提交-->
+           <div>
+               姓：<input type="text" v-model="xing" ><br>
+           </div>
+           <div>
+               名：<input type="text" v-model="ming" ><br>
+           </div> 
+           <div>
+            全名：{{fullName()}}<br> 
+           </div> 
+        </div>  
+    </body>
+        <script type="text/javascript"> 
+        Vue.config.productionTip=false//组织vue在启动时生成生产提示。
+
+        Vue.config.keyCodes.huiche=13//定义自定义键名=键码
+        let xing=''
+        const vm=new Vue({
+            el:'#root',
+            data:{
+                xing:'张',  //input框默认值
+                ming:'三',  //input框默认值             
+                },
+                methods:{
+                    fullName(){
+                        console.log("@----fullName")
+                     return this.xing+"-"+this.ming
+                 }
+                }
+             
+        })          
+        </script>        
+</html>
